@@ -17,16 +17,16 @@ router.get('/', (req, res) => {
 })
 
 // Writing an UPDATE statement
-router.put('/', (req, res) => {
-    const update = db.prepare("UPDATE expenses SET amount = ? WHERE description = ?")
-    update.run(req.body.description, req.body.amount);
-    res.status(201).send("Expense updated");
+router.put('/:id', (req, res) => {
+    const update = db.prepare("UPDATE expenses SET description = ?, amount = ? WHERE id = ?");
+    update.run(req.body.description, req.body.amount, req.params.id);
+    res.status(201).send("Expense Updated")
 })
 
 // Writing a DELETE statement
-router.delete('/', (req, res) => {
-    const del = db.prepare('DELETE FROM expenses WHERE description = ?');
-    del.run(req.body.description);
+router.delete('/:id', (req, res) => {
+    const del = db.prepare('DELETE FROM expenses WHERE id = ?');
+    del.run(req.params.id);
     res.status(201).send("Expense deleted");
 })
 
