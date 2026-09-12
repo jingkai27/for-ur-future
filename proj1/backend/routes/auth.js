@@ -6,11 +6,17 @@ const jwt = require('jsonwebtoken')
 
 // Prepare an INSERT statement
 router.post('/register', (req, res) => {
-    const insert = db.prepare('INSERT INTO users(username, password_hash) VALUES(?,?)')
-    const salt = bcrypt.genSaltSync(10)
-    const hash = bcrypt.hashSync(req.body.password, salt)
-    insert.run(req.body.username, hash)
-    res.status(201).send("User added")
+    const user = db.prepare('SELECT * FROM users WHERE username = ?').get(req.body.username)
+    if (user) {
+        res.status(409).send("User already exists")
+    } else {
+        // check if username exists already
+        const insert = db.prepare('INSERT INTO users(username, password_hash) VALUES(?,?)')
+        const salt = bcrypt.genSaltSync(10)
+        const hash = bcrypt.hashSync(req.body.password, salt)
+        insert.run(req.body.username, hash)
+        res.status(201).send("User added")
+    }
 });
 
 router.post('/login', (req, res) => {

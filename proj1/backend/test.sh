@@ -4,6 +4,7 @@
 
 cd "$(dirname "$0")"
 API=localhost:3000/api/expenses
+AUTH=localhost:3000/api/auth
 
 # kill anything already holding port 3000 (stale server from a previous run)
 lsof -ti:3000 2>/dev/null | xargs kill 2>/dev/null && sleep 0.5
@@ -58,3 +59,25 @@ curl -s $API | jq -c '.[]'
 
 echo
 echo "done."
+
+
+## Test the authentication database
+
+## test 1: register a new user
+echo 
+echo "Testing the Auth Database" 
+echo "Test 1: Registering a new user"
+code=$(curl -s -o /dev/null -w '%{http_code}' -X POST $AUTH/register \
+-H 'Content-Type:application/json' \
+-d '{"username":"Alice", "password":"sally123"}')
+
+if [ "$code" = "201" ]; then echo "PASS - register returned 201"
+else                        echo "FAIL - register returned $code"; fi
+
+# test 2: register with the same username twice
+echo "Test 2: register with same username twice" 
+code=$(curl -s -o /dev/null -w '%{http_code}' -X POST $AUTH/register -H 'Content-Type:application/json' \
+-d '{"username":"Alice", "password":"sally123"}')
+
+if [ "$code" = "409" ]; then echo "PASS - register returned 409" 
+else                       echo "FAIL - register returned $code"; fi
