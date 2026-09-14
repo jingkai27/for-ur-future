@@ -2,6 +2,7 @@
 
 // most important thing to create an express backend
 const express = require('express');
+const requireAuth = require("./middleware/auth")
 const app = express(); // new express app instance 
 const expenseRoutes = require('./routes/expense');
 const authRoutes = require('./routes/auth');
@@ -9,10 +10,7 @@ const authRoutes = require('./routes/auth');
 // app.use() configures how the application processes requests via middleware
 // first one is built-in middleware function in express.js that parses incoming requests with JSON payloads and makes data available under req.body
 app.use(express.json());
-app.use('/api/expenses', (banana, coconut, dragonfruit) => {
-    console.log("hello!");
-    dragonfruit();
-}, expenseRoutes);
+app.use('/api/expenses', requireAuth, expenseRoutes);
 
 app.use('/api/auth', authRoutes)
 
