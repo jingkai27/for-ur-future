@@ -23,3 +23,9 @@ building the auth checks
 - login with unknown user -> 404
 
 to-do: finish writing all 5 test cases, understand how the curl and shell stuff works
+
+write a middleware function
+verify token
+attach it to expense route
+shared secret
+update teh test 

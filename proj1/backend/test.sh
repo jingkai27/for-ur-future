@@ -81,3 +81,30 @@ code=$(curl -s -o /dev/null -w '%{http_code}' -X POST $AUTH/register -H 'Content
 
 if [ "$code" = "409" ]; then echo "PASS - register returned 409" 
 else                       echo "FAIL - register returned $code"; fi
+
+# Test 3: log in with the right password 
+echo "Test 3: log in with the right password" 
+code=$(curl -s -o "/dev/null" -w "%{http_code}" -X POST $AUTH/login -H 'Content-Type:application/json' \
+-d '{"username":"Alice", "password":"sally123"}')
+
+if [ "$code" = "200" ]; 
+     then echo "PASS - Logged in with the right password"
+else echo "FAIL - log in returned $code"; fi
+
+# Test 4: login with wrong password
+echo "Test 4: Log In with wrong password"
+code=$(curl -s -o "/dev/null" -w "%{http_code}" -X POST $AUTH/login -H 'Content-Type:application/json' \
+-d '{"username":"Alice", "password":"wrong"}')
+
+if [ "$code" = "401" ]; 
+then echo "PASS - Logged In with wrong password" 
+else echo "FAIL - log in returned $code"; fi
+
+# Test 5: login with unknown user
+echo : Test 5: Log In with unknown user"
+code=$(curl -s -o "/dev/null" -w "%{http_code}" -X POST $AUTH/login -H 'Content-Type:application/json' \
+-d '{"username":"Sarah", "password":"fakeuser"}')
+
+if [ "$code" = "404" ]; 
+then echo "PASS - Logged in with unknown user"
+else echo "FAIL - Log In returned $code"; fi
