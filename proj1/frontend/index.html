@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Tracker</title>
+</head>
+
+<body>
+
+    <!-- LOGIN & REGISTER SECTION -->
+    <section>
+        <h2>Login / Register</h2>
+        <form>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <br>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <br>
+            <div>
+                <button type="submit" formaction="/login" formmethod="POST">Login</button>
+                <button type="submit" formaction="/register" formmethod="POST">Register</button>
+            </div>
+        </form>
+    </section>
+
+    <hr>
+
+    <!-- EXPENSES SECTION -->
+    <section>
+        <h2>Expenses</h2>
+        <form>
+            <div>
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+            </div>
+            <br>
+            <div>
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" step="0.01" required>
+            </div>
+            <br>
+            <div>
+                <button type="submit" formaction="/expenses/add" formmethod="POST">Add</button>
+                <button type="submit" formaction="/logout" formmethod="POST">Logout</button>
+            </div>
+        </form>
+
+        <h3>Expense List</h3>
+        <ul>
+            <!-- List items will be rendered here by the server -->
+            <li>Example Item - $10.00</li>
+        </ul>
+    </section>
+
+</body>
+
+</html>

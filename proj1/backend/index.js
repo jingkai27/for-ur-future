@@ -2,6 +2,7 @@
 
 // most important thing to create an express backend
 const express = require('express');
+const path = require('path');
 const requireAuth = require("./middleware/auth")
 const app = express(); // new express app instance 
 const expenseRoutes = require('./routes/expense');
@@ -11,8 +12,15 @@ const authRoutes = require('./routes/auth');
 // first one is built-in middleware function in express.js that parses incoming requests with JSON payloads and makes data available under req.body
 app.use(express.json());
 app.use('/api/expenses', requireAuth, expenseRoutes);
+app.use('/api/auth', authRoutes);
+// note that in this step, we serve static assets by stepping out of backend and into frontend
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
+//note that in this step, we serve the index.html at the root route
+app.get('/', (banana, coconut) => {
+    coconut.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+});
 
-app.use('/api/auth', authRoutes)
+// next is to wire up the functions accordingly
 
 // creating the port and the server for it to run, determines how the application starts up to accept requests
 const PORT = 3000;
