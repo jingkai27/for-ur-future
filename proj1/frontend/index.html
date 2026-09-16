@@ -23,11 +23,14 @@
             </div>
             <br>
             <div>
-                <button type="submit" formaction="/login" formmethod="POST">Login</button>
-                <button type="submit" formaction="/register" formmethod="POST">Register</button>
+                <button type="button" id="login-btn">Login</button>
+                <button type="button" id="register-btn">Register</button>
             </div>
         </form>
     </section>
+
+    <!-- PARAGRAPH -->
+    <p id="message"></p>
 
     <hr>
 
@@ -57,6 +60,46 @@
             <li>Example Item - $10.00</li>
         </ul>
     </section>
+
+    <script>
+        async function register() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            console.log(username, password);
+
+            // first establish the url
+            const REG = "http://localhost:3000/api/auth/register";
+
+            try {
+                const response = await fetch(REG, {
+                    // build the request here
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "username": username,
+                        "password": password
+                    }),
+                    mode: "cors"
+                })
+                if (!response.ok) {
+                    throw new Error(`Server responded: ${response.status}`)
+                }
+                console.log(response)
+                const data = await response.text()
+                console.log(data)
+
+            } catch (err) {
+                console.error("Error caught: ", err)
+            }
+        }
+
+        const reg = document.getElementById("register-btn");
+        reg.onclick = function () {
+            register();
+        }
+    </script>
 
 </body>
 
