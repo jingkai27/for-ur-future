@@ -13,14 +13,8 @@ const authRoutes = require('./routes/auth');
 app.use(express.json());
 app.use('/api/expenses', requireAuth, expenseRoutes);
 app.use('/api/auth', authRoutes);
-// note that in this step, we serve static assets by stepping out of backend and into frontend
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
-//note that in this step, we serve the index.html at the root route
-app.get('/', (banana, coconut) => {
-    coconut.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
-});
-
-// next is to wire up the functions accordingly
+// make all files in frontend folder available 
+app.use(express.static(path.join(__dirname, '..', 'frontend'), { index: 'index.html' }));
 
 // creating the port and the server for it to run, determines how the application starts up to accept requests
 const PORT = 3000;

@@ -49,7 +49,7 @@
             </div>
             <br>
             <div>
-                <button type="submit" formaction="/expenses/add" formmethod="POST">Add</button>
+                <button type="button" id="add-btn">Add</button>
                 <button type="submit" formaction="/logout" formmethod="POST">Logout</button>
             </div>
         </form>
@@ -133,6 +133,25 @@
             }
         }
 
+        async function add() {
+            // check if secret token exists
+            // if it doesnt, return error and say please log in
+            // if it does, do some field checking
+            // if the description not string, return error
+            // if the amount not float return error, must be postive amount
+            // if all fields are correct then add to database
+            // how? call the expense.js route, call the insert route, add an expense
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error("Invalid token, please log in!")
+                }
+                console.log(token);
+            } catch (err) {
+                console.error("Error caught: ", err)
+            }
+        }
+
         const reg = document.getElementById("register-btn");
         reg.onclick = function () {
             register();
@@ -140,7 +159,12 @@
         const l = document.getElementById("login-btn");
         l.onclick = function () {
             login();
-        }
+        };
+
+        const a = document.getElementById("add-btn");
+        a.onclick = function () {
+            add();
+        }; 
     </script>
 
 </body>
