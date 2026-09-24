@@ -24,6 +24,7 @@ const jwt = require('jsonwebtoken')
 
 // Prepare an INSERT statement
 router.post('/register', (req, res) => {
+    console.log("Register Button Clicked")
     const user = db.prepare('SELECT * FROM users WHERE username = ?').get(req.body.username)
     if (user) {
         res.status(409).send("User already exists")

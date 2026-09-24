@@ -1,4 +1,4 @@
-start project: `node index.js`
+start project: cd into backend, then run `node index.js`
 then can do all the curl stuff
 
 

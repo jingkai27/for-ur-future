@@ -95,9 +95,49 @@
             }
         }
 
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            console.log("LOGGIN IN NIBBA")
+            console.log(username, password);
+
+            // first establish the url
+            const REG = "http://localhost:3000/api/auth/login";
+
+            try {
+                const response = await fetch(REG, {
+                    // build the request here
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "username": username,
+                        "password": password
+                    }),
+                    mode: "cors"
+                })
+                // here i need to see what is the response
+                if (!response.ok) {
+                    throw new Error(`Server responded: ${response.status}`)
+                }
+                console.log(response)
+                // i need to store it somewhere
+                const data = await response.text()
+                console.log(data)
+
+            } catch (err) {
+                console.error("Error caught: ", err)
+            }
+        }
+
         const reg = document.getElementById("register-btn");
         reg.onclick = function () {
             register();
+        };
+        const login = document.getElementById("login-btn");
+        login.onclick = function () {
+            login();
         }
     </script>
 
