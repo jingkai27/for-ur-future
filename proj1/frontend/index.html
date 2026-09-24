@@ -123,9 +123,11 @@
                 }
                 console.log(response)
                 // i need to store it somewhere
-                const data = await response.text()
-                console.log(data)
-
+                const data = await response.json()
+                console.log(data["token"])
+                // storing to localStorage
+                localStorage.setItem('token', data["token"])
+                console.log("Saved token in local storage: ", localStorage.getItem('token'));
             } catch (err) {
                 console.error("Error caught: ", err)
             }
@@ -135,8 +137,8 @@
         reg.onclick = function () {
             register();
         };
-        const login = document.getElementById("login-btn");
-        login.onclick = function () {
+        const l = document.getElementById("login-btn");
+        l.onclick = function () {
             login();
         }
     </script>
