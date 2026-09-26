@@ -5,6 +5,7 @@ const db = require('../database');
 // Prepare an INSERT statement
 router.post('/', (req, res) => {
     const insert = db.prepare('INSERT INTO expenses(description, amount) VALUES(?,?)')
+    console.log(req.body)
     insert.run(req.body.description, req.body.amount)
     res.status(201).send("Expense added")
 });

@@ -141,12 +141,32 @@
             // if the amount not float return error, must be postive amount
             // if all fields are correct then add to database
             // how? call the expense.js route, call the insert route, add an expense
+            const des = document.getElementById("description").value;
+            const amt = document.getElementById("amount").value;
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
                     throw new Error("Invalid token, please log in!")
                 }
                 // then i need to send it to the back to do the validation check 
+                const EXP = "http://localhost:3000/api/expenses";
+                const response = await fetch(EXP, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        "description": des,
+                        "amount": amt
+                    })
+                })
+                if (!response.ok) {
+                    throw new Error(`Server responded: ${response.status}`)
+                }
+                console.log(response)
+                const data = await response.text()
+                console.log(data)
 
                 console.log(token);
             } catch (err) {
