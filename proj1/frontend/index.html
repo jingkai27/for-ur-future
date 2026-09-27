@@ -50,6 +50,7 @@
             <br>
             <div>
                 <button type="button" id="add-btn">Add</button>
+                <button type="button" id="refresh-btn">Refresh</button>
                 <button type="submit" formaction="/logout" formmethod="POST">Logout</button>
             </div>
         </form>
@@ -62,13 +63,15 @@
     </section>
 
     <script>
+        // TO-DO1: Refactor the API BASE
+        const API_BASE = "http://localhost:3000/api";
         async function register() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             console.log(username, password);
 
             // first establish the url
-            const REG = "http://localhost:3000/api/auth/register";
+            const REG = `${API_BASE}/auth/register`;
 
             try {
                 const response = await fetch(REG, {
@@ -102,10 +105,10 @@
             console.log(username, password);
 
             // first establish the url
-            const REG = "http://localhost:3000/api/auth/login";
+            const LOGIN = `${API_BASE}/auth/login`;
 
             try {
-                const response = await fetch(REG, {
+                const response = await fetch(LOGIN, {
                     // build the request here
                     method: "POST",
                     headers: {
@@ -121,15 +124,36 @@
                 if (!response.ok) {
                     throw new Error(`Server responded: ${response.status}`)
                 }
-                console.log(response)
-                // i need to store it somewhere
                 const data = await response.json()
-                console.log(data["token"])
-                // storing to localStorage
                 localStorage.setItem('token', data["token"])
-                console.log("Saved token in local storage: ", localStorage.getItem('token'));
             } catch (err) {
                 console.error("Error caught: ", err)
+            }
+        }
+
+        async function refresh() {
+            // this function refreshes the list by pulling and getting all expenses
+            // first check if authenticated - try-catch block, then make a SELECT ALL request 
+            const EXP = `${API_BASE}/expenses`;
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error("Please log in!")
+                }
+                const response = await fetch(EXP, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': "application/json",
+                        'Authorization': `Bearer: ${token}`
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`Server responded: ${response.status}`)
+                }
+                const data = await response.json()
+                console.log(data)
+            } catch (err) {
+                console.error("New error caught", err);
             }
         }
 
@@ -146,10 +170,10 @@
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
-                    throw new Error("Invalid token, please log in!")
+                    throw new Error("Please log in!")
                 }
                 // then i need to send it to the back to do the validation check 
-                const EXP = "http://localhost:3000/api/expenses";
+                const EXP = `${API_BASE}/expenses`;
                 const response = await fetch(EXP, {
                     method: "POST",
                     headers: {
@@ -186,7 +210,11 @@
         const a = document.getElementById("add-btn");
         a.onclick = function () {
             add();
-        }; 
+        };
+        const refr = document.getElementById("refresh-btn");
+        refr.onclick = function () {
+            refresh();
+        }
     </script>
 
 </body>

@@ -14,6 +14,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
     const select = db.prepare('SELECT * FROM expenses');
     const rows = select.all();
+    console.log(rows)
     res.status(200).json(rows);
 })
 

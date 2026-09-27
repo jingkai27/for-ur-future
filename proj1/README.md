@@ -29,3 +29,6 @@ verify token
 attach it to expense route
 shared secret
 update teh test 
+
+# step 5: next steps
+- create the read, update and delete functionsß
