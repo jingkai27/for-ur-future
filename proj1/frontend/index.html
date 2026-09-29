@@ -56,7 +56,7 @@
         </form>
 
         <h3>Expense List</h3>
-        <ul>
+        <ul id="expense-list">
             <!-- List items will be rendered here by the server -->
             <li>Example Item - $10.00</li>
         </ul>
@@ -135,6 +135,10 @@
             // this function refreshes the list by pulling and getting all expenses
             // first check if authenticated - try-catch block, then make a SELECT ALL request 
             const EXP = `${API_BASE}/expenses`;
+            // grab the unordered list and empty it 
+            const list = document.querySelector('expense-list');
+            list.innerHTML = '';
+
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
@@ -152,6 +156,12 @@
                 }
                 const data = await response.json()
                 console.log(data)
+
+                // for every expense in data, create a new element as a li object, then append it to the inner list accoridingly \
+                for (const i of data) {
+                    const newI = document.createElement("li");
+                    console.log(i);
+                }
             } catch (err) {
                 console.error("New error caught", err);
             }
