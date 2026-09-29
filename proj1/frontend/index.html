@@ -124,10 +124,11 @@
                 if (!response.ok) {
                     throw new Error(`Server responded: ${response.status}`)
                 }
-                const data = await response.json()
-                localStorage.setItem('token', data["token"])
+                const data = await response.json();
+                localStorage.setItem('token', data["token"]);
+                refresh();
             } catch (err) {
-                console.error("Error caught: ", err)
+                console.error("Error caught: ", err);
             }
         }
 
@@ -136,7 +137,7 @@
             // first check if authenticated - try-catch block, then make a SELECT ALL request 
             const EXP = `${API_BASE}/expenses`;
             // grab the unordered list and empty it 
-            const list = document.querySelector('expense-list');
+            const list = document.querySelector('#expense-list');
             list.innerHTML = '';
 
             try {
@@ -155,12 +156,12 @@
                     throw new Error(`Server responded: ${response.status}`)
                 }
                 const data = await response.json()
-                console.log(data)
 
                 // for every expense in data, create a new element as a li object, then append it to the inner list accoridingly \
                 for (const i of data) {
                     const newI = document.createElement("li");
-                    console.log(i);
+                    newI.textContent = `${i.description} - ${i.amount}`;
+                    list.append(newI);
                 }
             } catch (err) {
                 console.error("New error caught", err);
@@ -200,9 +201,8 @@
                 }
                 console.log(response)
                 const data = await response.text()
-                console.log(data)
-
-                console.log(token);
+                console.log(data);
+                refresh();
             } catch (err) {
                 console.error("Error caught: ", err)
             }
